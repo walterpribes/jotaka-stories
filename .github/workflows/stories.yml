@@ -1,0 +1,54 @@
+name: Stories Jotaká
+
+on:
+  schedule:
+    # 10h45 e 11h30 (horário de Brasília). A primeira espera até 11h e publica;
+    # a segunda só age se a primeira atrasar ou falhar (não publica duas vezes).
+    - cron: "45 13 * * *"
+    - cron: "30 14 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "check = conferir token | dry-run = testar a arte de hoje sem publicar | publish = publicar a de hoje agora"
+        required: true
+        default: check
+        type: choice
+        options: [check, dry-run, publish]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: stories
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Publicar story do dia
+        env:
+          META_PAGE_TOKEN: ${{ secrets.META_PAGE_TOKEN }}
+          META_PAGE_ID: ${{ secrets.META_PAGE_ID }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+        run: |
+          MODE="${{ github.event.inputs.mode || 'publish' }}"
+          case "$MODE" in
+            check)   python publish.py --check ;;
+            dry-run) python publish.py --dry-run ;;
+            *)       python publish.py ;;
+          esac
+      - name: Registrar o que foi publicado
+        if: always()
+        run: |
+          if [ -n "$(git status --porcelain published.json 2>/dev/null)" ]; then
+            git config user.name "stories-bot"
+            git config user.email "stories-bot@users.noreply.github.com"
+            git add published.json
+            git commit -m "Registro de publicação $(TZ=America/Sao_Paulo date +%F)"
+            git push
+          fi
