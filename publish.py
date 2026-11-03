@@ -103,6 +103,11 @@ def main():
     day = a.date or now.date().isoformat()
     sched = json.load(open(os.path.join(ROOT, "schedule.json"), encoding="utf-8"))
     item = next((s for s in sched if s["date"] == day), None)
+    if a.dry_run and not item and not a.date:
+        # No teste, usa a próxima arte do calendário.
+        item = next((s for s in sched if s["date"] >= day), None)
+        if item:
+            day = item["date"]
     if not item:
         print(f"Nada agendado para {day}.")
         return
