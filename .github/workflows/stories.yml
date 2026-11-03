@@ -14,6 +14,10 @@ on:
         default: check
         type: choice
         options: [check, dry-run, publish]
+      date:
+        description: "Opcional: publicar AGORA a arte deste dia (ex.: 2026-11-04). Use com mode = publish."
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -37,10 +41,11 @@ jobs:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
         run: |
           MODE="${{ github.event.inputs.mode || 'publish' }}"
+          DAY="${{ github.event.inputs.date }}"
           case "$MODE" in
             check)   python publish.py --check ;;
             dry-run) python publish.py --dry-run ;;
-            *)       python publish.py ;;
+            *)       if [ -n "$DAY" ]; then python publish.py --date "$DAY"; else python publish.py; fi ;;
           esac
       - name: Registrar o que foi publicado
         if: always()
