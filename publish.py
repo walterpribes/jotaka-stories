@@ -23,19 +23,25 @@ STATE = os.path.join(ROOT, "published.json")
 
 
 def call(method, path, **params):
-    params["access_token"] = os.environ["META_PAGE_TOKEN"]
+    # O token vai só no cabeçalho Authorization: nunca na URL, nunca impresso.
+    token = os.environ.get("META_PAGE_TOKEN", "").strip()
+    if not token:
+        raise SystemExit("Falta o segredo META_PAGE_TOKEN no GitHub.")
+    headers = {"Authorization": f"Bearer {token}"}
     data = urllib.parse.urlencode(params).encode()
     url = f"{API}/{path}"
     if method == "GET":
-        req = urllib.request.Request(f"{url}?{data.decode()}")
+        req = urllib.request.Request(f"{url}?{data.decode()}", headers=headers)
     else:
-        req = urllib.request.Request(url, data=data, method="POST")
+        req = urllib.request.Request(url, data=data, method="POST", headers=headers)
     try:
         with urllib.request.urlopen(req, timeout=60) as r:
             return json.load(r)
     except urllib.error.HTTPError as e:
-        body = e.read().decode(errors="replace")
+        body = e.read().decode(errors="replace").replace(token, "***")
         raise SystemExit(f"Erro da Meta em {method} {path}: {body}")
+    except urllib.error.URLError as e:
+        raise SystemExit(f"Sem conexão com a Meta em {method} {path}: {e.reason}")
 
 
 def accounts():
