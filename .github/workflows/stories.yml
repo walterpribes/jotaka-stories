@@ -6,6 +6,10 @@ on:
     # a segunda só age se a primeira atrasar ou falhar (não publica duas vezes).
     - cron: "45 13 * * *"
     - cron: "30 14 * * *"
+  # Publicar na hora: basta enviar o arquivo publicar-agora.txt com a data da arte (ex.: 2026-11-04).
+  push:
+    branches: [main]
+    paths: [publicar-agora.txt]
   workflow_dispatch:
     inputs:
       mode:
@@ -42,6 +46,10 @@ jobs:
         run: |
           MODE="${{ github.event.inputs.mode || 'publish' }}"
           DAY="${{ github.event.inputs.date }}"
+          if [ "${{ github.event_name }}" = "push" ]; then
+            MODE=publish
+            DAY="$(tr -cd '0-9-' < publicar-agora.txt | head -c 10)"
+          fi
           case "$MODE" in
             check)   python publish.py --check ;;
             dry-run) python publish.py --dry-run ;;
