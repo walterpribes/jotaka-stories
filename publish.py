@@ -87,6 +87,7 @@ def main():
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--date")
+    ap.add_argument("--time", help="HH:MM, quando houver mais de um story no dia")
     a = ap.parse_args()
 
     page_id, page_name, ig_id, ig_user = accounts()
@@ -102,40 +103,46 @@ def main():
     now = dt.datetime.now(TZ)
     day = a.date or now.date().isoformat()
     sched = json.load(open(os.path.join(ROOT, "schedule.json"), encoding="utf-8"))
-    item = next((s for s in sched if s["date"] == day), None)
-    if a.dry_run and not item and not a.date:
-        # No teste, usa a próxima arte do calendário.
-        item = next((s for s in sched if s["date"] >= day), None)
-        if item:
-            day = item["date"]
+    state = json.load(open(STATE)) if os.path.exists(STATE) else {}
+
+    def chave(s):
+        # o story das 11h usa só a data (formato antigo); os outros horários usam "data hora"
+        return s["date"] if s["time"] == "11:00" else f"{s['date']} {s['time']}"
+
+    def feito(s):
+        d = state.get(chave(s), {})
+        return bool(d.get("instagram") and d.get("facebook"))
+
+    def quando(s):
+        hh, mm = map(int, s["time"].split(":"))
+        return now.replace(hour=hh, minute=mm, second=0, microsecond=0)
+
+    do_dia = [s for s in sched if s["date"] == day and (not a.time or s["time"] == a.time)]
+    if a.dry_run:
+        item = do_dia[0] if do_dia else None
+        if not item and not a.date:
+            # No teste, usa a próxima arte do calendário.
+            item = next((s for s in sched if (s["date"], s["time"]) >= (day, now.strftime("%H:%M"))), None)
+    elif a.date:
+        item = next((s for s in do_dia if not feito(s)), None)
+    else:
+        # o story de hoje cujo horário está a até 30 min de agora (ou passou há no máximo 3 h) e ainda não saiu
+        item = next((s for s in do_dia if -3 * 3600 <= (quando(s) - now).total_seconds() <= 1800 and not feito(s)), None)
     if not item:
-        print(f"Nada agendado para {day}.")
+        print(f"Nada pendente para {day} neste horário.")
         return
     url = media_url(item["file"])
-    print(f"{day} {item['time']}: {item['file']}")
-
+    print(f"{item['date']} {item['time']}: {item['file']}")
     if a.dry_run:
         c = ig_container(ig_id, url)
         print(f"Teste OK: o Instagram aceitou a arte (container {c}). Nada foi publicado.")
         return
-
-    state = json.load(open(STATE)) if os.path.exists(STATE) else {}
-    done = state.get(day, {})
-    if done.get("instagram") and done.get("facebook"):
-        print("Já publicado hoje. Nada a fazer.")
-        return
-
+    done = state.get(chave(item), {})
     if not a.date:
-        hh, mm = map(int, item["time"].split(":"))
-        target = now.replace(hour=hh, minute=mm, second=0, microsecond=0)
-        wait = (target - now).total_seconds()
-        if wait > 1800:
-            print("Ainda é cedo; a próxima execução publica.")
-            return
+        wait = (quando(item) - now).total_seconds()
         if wait > 0:
             print(f"Aguardando {int(wait)}s até {item['time']}…")
             time.sleep(wait)
-
     errors = []
     for net, fn, acc in (("instagram", publish_ig, ig_id), ("facebook", publish_fb, page_id)):
         if done.get(net):
@@ -146,7 +153,7 @@ def main():
         except SystemExit as e:
             errors.append(f"{net}: {e}")
             print(f"Falhou no {net}: {e}")
-    state[day] = done
+    state[chave(item)] = done
     json.dump(state, open(STATE, "w"), indent=2)
     if errors:
         sys.exit("; ".join(errors))

@@ -2,8 +2,10 @@ name: Stories Jotaká
 
 on:
   schedule:
-    # 10h45 e 11h30 (horário de Brasília). A primeira espera até 11h e publica;
-    # a segunda só age se a primeira atrasar ou falhar (não publica duas vezes).
+    # 9h45 e 10h30 (story das 10h) · 10h45 e 11h30 (story das 11h), horário de Brasília.
+    # A primeira de cada par espera o horário e publica; a segunda só age se a primeira atrasar ou falhar.
+    - cron: "45 12 * * *"
+    - cron: "30 13 * * *"
     - cron: "45 13 * * *"
     - cron: "30 14 * * *"
   # Publicar na hora: basta enviar o arquivo publicar-agora.txt com a data da arte (ex.: 2026-11-04).
