@@ -40,8 +40,11 @@ jobs:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
         run: |
           MODE="${{ github.event.inputs.mode || 'publish' }}"
-          if [ "${{ github.event_name }}" = "push" ]; then MODE=dry-run; fi
-          if [ "$MODE" = "dry-run" ]; then python publish_feed.py --dry-run; else python publish_feed.py; fi
+          DAY=""
+          if [ "${{ github.event_name }}" = "push" ]; then MODE=dry-run; DAY="$(grep -oE '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' testar-feed.txt | head -1)"; fi
+          if [ "$MODE" = "dry-run" ]; then
+            if [ -n "$DAY" ]; then python publish_feed.py --dry-run --date "$DAY"; else python publish_feed.py --dry-run; fi
+          else python publish_feed.py; fi
       - name: Registrar o que foi publicado
         if: always()
         run: |
