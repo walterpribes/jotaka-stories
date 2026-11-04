@@ -117,6 +117,30 @@ def main():
         hh, mm = map(int, s["time"].split(":"))
         return now.replace(hour=hh, minute=mm, second=0, microsecond=0)
 
+    def publicar(item):
+        url = media_url(item["file"])
+        print(f"{item['date']} {item['time']}: {item['file']}")
+        done = state.get(chave(item), {})
+        if not a.date:
+            wait = (quando(item) - dt.datetime.now(TZ)).total_seconds()
+            if wait > 0:
+                print(f"Aguardando {int(wait)}s até {item['time']}…")
+                time.sleep(wait)
+        errors = []
+        for net, fn, acc in (("instagram", publish_ig, ig_id), ("facebook", publish_fb, page_id)):
+            if done.get(net):
+                continue
+            try:
+                done[net] = fn(acc, url)
+                print(f"Publicado no {net}: {done[net]}")
+            except SystemExit as e:
+                errors.append(f"{net}: {e}")
+                print(f"Falhou no {net}: {e}")
+        state[chave(item)] = done
+        json.dump(state, open(STATE, "w"), indent=2)
+        if errors:
+            raise SystemExit("; ".join(errors))
+
     do_dia = [s for s in sched if s["date"] == day and (not a.time or s["time"] == a.time)]
     if a.dry_run:
         item = do_dia[0] if do_dia else None
@@ -127,36 +151,28 @@ def main():
         item = next((s for s in do_dia if not feito(s)), None)
     else:
         # o story de hoje cujo horário está a até 30 min de agora (ou passou há no máximo 3 h) e ainda não saiu
-        item = next((s for s in do_dia if -3 * 3600 <= (quando(s) - now).total_seconds() <= 1800 and not feito(s)), None)
+        fila = [s for s in do_dia if -3 * 3600 <= (quando(s) - now).total_seconds() <= 1800 and not feito(s)]
+        if len(fila) > 1:
+            # mais de um story no mesmo horário: publica um depois do outro nesta mesma execução
+            erros = []
+            for s in fila:
+                try:
+                    publicar(s)
+                except SystemExit as e:
+                    erros.append(str(e))
+            if erros: sys.exit("; ".join(erros))
+            return
+        item = fila[0] if fila else None
     if not item:
         print(f"Nada pendente para {day} neste horário.")
         return
-    url = media_url(item["file"])
-    print(f"{item['date']} {item['time']}: {item['file']}")
     if a.dry_run:
+        url = media_url(item["file"])
+        print(f"{item['date']} {item['time']}: {item['file']}")
         c = ig_container(ig_id, url)
         print(f"Teste OK: o Instagram aceitou a arte (container {c}). Nada foi publicado.")
         return
-    done = state.get(chave(item), {})
-    if not a.date:
-        wait = (quando(item) - now).total_seconds()
-        if wait > 0:
-            print(f"Aguardando {int(wait)}s até {item['time']}…")
-            time.sleep(wait)
-    errors = []
-    for net, fn, acc in (("instagram", publish_ig, ig_id), ("facebook", publish_fb, page_id)):
-        if done.get(net):
-            continue
-        try:
-            done[net] = fn(acc, url)
-            print(f"Publicado no {net}: {done[net]}")
-        except SystemExit as e:
-            errors.append(f"{net}: {e}")
-            print(f"Falhou no {net}: {e}")
-    state[chave(item)] = done
-    json.dump(state, open(STATE, "w"), indent=2)
-    if errors:
-        sys.exit("; ".join(errors))
+    publicar(item)
 
 
 if __name__ == "__main__":
