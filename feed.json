@@ -1,6 +1,6 @@
 [
   {
-    "date": "2026-11-05",
+    "date": "2026-11-04",
     "time": "10:00",
     "post": "01-pratos-individuais-carrossel",
     "files": [
@@ -16,6 +16,15 @@
   },
   {
     "date": "2026-11-05",
+    "time": "10:00",
+    "post": "02-fettuccine-alfredo",
+    "files": [
+      "feed10/02-fettuccine-alfredo/01.jpg"
+    ],
+    "caption": "Cremoso do jeito certo 🤍 Fettuccine Alfredo, daquele que abraça.\nMarca quem divide esse prato com você 👇\n#brasilia #massa #jotaka"
+  },
+  {
+    "date": "2026-11-05",
     "time": "18:00",
     "post": "01-polemica-picanha",
     "files": [
@@ -26,11 +35,16 @@
   {
     "date": "2026-11-06",
     "time": "10:00",
-    "post": "02-fettuccine-alfredo",
+    "post": "03-temporada-de-caldos-carrossel",
     "files": [
-      "feed10/02-fettuccine-alfredo/01.jpg"
+      "feed10/03-temporada-de-caldos-carrossel/01.jpg",
+      "feed10/03-temporada-de-caldos-carrossel/02.jpg",
+      "feed10/03-temporada-de-caldos-carrossel/03.jpg",
+      "feed10/03-temporada-de-caldos-carrossel/04.jpg",
+      "feed10/03-temporada-de-caldos-carrossel/05.jpg",
+      "feed10/03-temporada-de-caldos-carrossel/06.jpg"
     ],
-    "caption": "Cremoso do jeito certo 🤍 Fettuccine Alfredo, daquele que abraça.\nMarca quem divide esse prato com você 👇\n#brasilia #massa #jotaka"
+    "caption": "Abriu a temporada de caldos 🍲 Verde, Feijão, Frango com Milho e Vaca Atolada, todo dia a partir das 17h.\nQual é o seu? Comenta aí 👇\n#brasilia #caldo #jotaka"
   },
   {
     "date": "2026-11-06",
@@ -44,16 +58,16 @@
   {
     "date": "2026-11-07",
     "time": "10:00",
-    "post": "03-temporada-de-caldos-carrossel",
+    "post": "04-super-saladas-carrossel",
     "files": [
-      "feed10/03-temporada-de-caldos-carrossel/01.jpg",
-      "feed10/03-temporada-de-caldos-carrossel/02.jpg",
-      "feed10/03-temporada-de-caldos-carrossel/03.jpg",
-      "feed10/03-temporada-de-caldos-carrossel/04.jpg",
-      "feed10/03-temporada-de-caldos-carrossel/05.jpg",
-      "feed10/03-temporada-de-caldos-carrossel/06.jpg"
+      "feed10/04-super-saladas-carrossel/01.jpg",
+      "feed10/04-super-saladas-carrossel/02.jpg",
+      "feed10/04-super-saladas-carrossel/03.jpg",
+      "feed10/04-super-saladas-carrossel/04.jpg",
+      "feed10/04-super-saladas-carrossel/05.jpg",
+      "feed10/04-super-saladas-carrossel/06.jpg"
     ],
-    "caption": "Abriu a temporada de caldos 🍲 Verde, Feijão, Frango com Milho e Vaca Atolada, todo dia a partir das 17h.\nQual é o seu? Comenta aí 👇\n#brasilia #caldo #jotaka"
+    "caption": "Leve não é sem graça 🥗 Super Salada com Camarão, com Filé, com Frango ou a clássica Caesar.\nQual você escolhe? Comenta 1, 2, 3 ou 4 👇\n#brasilia #salada #jotaka"
   },
   {
     "date": "2026-11-07",
@@ -72,16 +86,11 @@
   {
     "date": "2026-11-08",
     "time": "10:00",
-    "post": "04-super-saladas-carrossel",
+    "post": "05-moqueca-jotaka",
     "files": [
-      "feed10/04-super-saladas-carrossel/01.jpg",
-      "feed10/04-super-saladas-carrossel/02.jpg",
-      "feed10/04-super-saladas-carrossel/03.jpg",
-      "feed10/04-super-saladas-carrossel/04.jpg",
-      "feed10/04-super-saladas-carrossel/05.jpg",
-      "feed10/04-super-saladas-carrossel/06.jpg"
+      "feed10/05-moqueca-jotaka/01.jpg"
     ],
-    "caption": "Leve não é sem graça 🥗 Super Salada com Camarão, com Filé, com Frango ou a clássica Caesar.\nQual você escolhe? Comenta 1, 2, 3 ou 4 👇\n#brasilia #salada #jotaka"
+    "caption": "Moqueca Jotaká com camarão, pra dividir com quem você gosta 🦐\nSalva pro almoço de domingo 📌\n#brasilia #moqueca #jotaka"
   },
   {
     "date": "2026-11-08",
@@ -95,11 +104,11 @@
   {
     "date": "2026-11-09",
     "time": "10:00",
-    "post": "05-moqueca-jotaka",
+    "post": "06-medalhao-madeirado",
     "files": [
-      "feed10/05-moqueca-jotaka/01.jpg"
+      "feed10/06-medalhao-madeirado/01.jpg"
     ],
-    "caption": "Moqueca Jotaká com camarão, pra dividir com quem você gosta 🦐\nSalva pro almoço de domingo 📌\n#brasilia #moqueca #jotaka"
+    "caption": "Medalhão de Filé Madeirado 🥩 pra quem não abre mão de uma boa carne.\nMarca quem pede carne sempre 👇\n#brasilia #file #jotaka"
   },
   {
     "date": "2026-11-09",
@@ -113,11 +122,11 @@
   {
     "date": "2026-11-10",
     "time": "10:00",
-    "post": "06-medalhao-madeirado",
+    "post": "07-parmegiana-borda-ou-meio",
     "files": [
-      "feed10/06-medalhao-madeirado/01.jpg"
+      "feed10/07-parmegiana-borda-ou-meio/01.jpg"
     ],
-    "caption": "Medalhão de Filé Madeirado 🥩 pra quem não abre mão de uma boa carne.\nMarca quem pede carne sempre 👇\n#brasilia #file #jotaka"
+    "caption": "Filé à Parmegiana chegou na mesa: por onde você começa, borda ou meio? 🧀\nComenta aí 👇\n#brasilia #parmegiana #jotaka"
   },
   {
     "date": "2026-11-10",
@@ -135,11 +144,15 @@
   {
     "date": "2026-11-11",
     "time": "10:00",
-    "post": "07-parmegiana-borda-ou-meio",
+    "post": "08-qual-massa-carrossel",
     "files": [
-      "feed10/07-parmegiana-borda-ou-meio/01.jpg"
+      "feed10/08-qual-massa-carrossel/01.jpg",
+      "feed10/08-qual-massa-carrossel/02.jpg",
+      "feed10/08-qual-massa-carrossel/03.jpg",
+      "feed10/08-qual-massa-carrossel/04.jpg",
+      "feed10/08-qual-massa-carrossel/05.jpg"
     ],
-    "caption": "Filé à Parmegiana chegou na mesa: por onde você começa, borda ou meio? 🧀\nComenta aí 👇\n#brasilia #parmegiana #jotaka"
+    "caption": "Qual massa é a sua? 🍝 Filé Pepper, Chicken Alfredo ou Camarão Alfredo.\nComenta 1, 2 ou 3 e marca quem ama massa 👇\n#brasilia #massa #jotaka"
   },
   {
     "date": "2026-11-11",
@@ -160,15 +173,11 @@
   {
     "date": "2026-11-12",
     "time": "10:00",
-    "post": "08-qual-massa-carrossel",
+    "post": "09-tilapia-crocante",
     "files": [
-      "feed10/08-qual-massa-carrossel/01.jpg",
-      "feed10/08-qual-massa-carrossel/02.jpg",
-      "feed10/08-qual-massa-carrossel/03.jpg",
-      "feed10/08-qual-massa-carrossel/04.jpg",
-      "feed10/08-qual-massa-carrossel/05.jpg"
+      "feed10/09-tilapia-crocante/01.jpg"
     ],
-    "caption": "Qual massa é a sua? 🍝 Filé Pepper, Chicken Alfredo ou Camarão Alfredo.\nComenta 1, 2 ou 3 e marca quem ama massa 👇\n#brasilia #massa #jotaka"
+    "caption": "Crocância que dá pra ouvir 🔊 Tilápia Crocante, sequinha por fora.\nMarca quem pede peixe sempre 👇\n#brasilia #tilapia #jotaka"
   },
   {
     "date": "2026-11-12",
@@ -182,11 +191,11 @@
   {
     "date": "2026-11-13",
     "time": "10:00",
-    "post": "09-tilapia-crocante",
+    "post": "10-oswaldo-aranha",
     "files": [
-      "feed10/09-tilapia-crocante/01.jpg"
+      "feed10/10-oswaldo-aranha/01.jpg"
     ],
-    "caption": "Crocância que dá pra ouvir 🔊 Tilápia Crocante, sequinha por fora.\nMarca quem pede peixe sempre 👇\n#brasilia #tilapia #jotaka"
+    "caption": "Filé Oswaldo Aranha: o clássico que nunca sai de moda 🥩\nSalva pro próximo almoço 📌\n#brasilia #almoco #jotaka"
   },
   {
     "date": "2026-11-13",
@@ -204,11 +213,11 @@
   {
     "date": "2026-11-14",
     "time": "10:00",
-    "post": "10-oswaldo-aranha",
+    "post": "11-salmao-a-belle",
     "files": [
-      "feed10/10-oswaldo-aranha/01.jpg"
+      "feed10/11-salmao-a-belle/01.jpg"
     ],
-    "caption": "Filé Oswaldo Aranha: o clássico que nunca sai de moda 🥩\nSalva pro próximo almoço 📌\n#brasilia #almoco #jotaka"
+    "caption": "Salmão à Belle, pra quem ama frutos do mar 🐟🦐\nSalva pro próximo almoço 📌\n#brasilia #salmao #jotaka"
   },
   {
     "date": "2026-11-14",
@@ -222,11 +231,11 @@
   {
     "date": "2026-11-15",
     "time": "10:00",
-    "post": "11-salmao-a-belle",
+    "post": "12-pudim",
     "files": [
-      "feed10/11-salmao-a-belle/01.jpg"
+      "feed10/12-pudim/01.jpg"
     ],
-    "caption": "Salmão à Belle, pra quem ama frutos do mar 🐟🦐\nSalva pro próximo almoço 📌\n#brasilia #salmao #jotaka"
+    "caption": "Tem pudim no Jotaká 🍮 e ele não espera ninguém.\nMarca quem nunca dispensa um pudim 👇\n#brasilia #pudim #jotaka"
   },
   {
     "date": "2026-11-15",
@@ -245,11 +254,11 @@
   {
     "date": "2026-11-16",
     "time": "10:00",
-    "post": "12-pudim",
+    "post": "13-camarao-rei",
     "files": [
-      "feed10/12-pudim/01.jpg"
+      "feed10/13-camarao-rei/01.jpg"
     ],
-    "caption": "Tem pudim no Jotaká 🍮 e ele não espera ninguém.\nMarca quem nunca dispensa um pudim 👇\n#brasilia #pudim #jotaka"
+    "caption": "Pedido de rei 👑 Camarão Rei, pra quem merece um almoço especial.\nMarca essa pessoa 👇\n#brasilia #camarao #jotaka"
   },
   {
     "date": "2026-11-16",
@@ -263,11 +272,11 @@
   {
     "date": "2026-11-17",
     "time": "10:00",
-    "post": "13-camarao-rei",
+    "post": "14-carne-do-sertao",
     "files": [
-      "feed10/13-camarao-rei/01.jpg"
+      "feed10/14-carne-do-sertao/01.jpg"
     ],
-    "caption": "Pedido de rei 👑 Camarão Rei, pra quem merece um almoço especial.\nMarca essa pessoa 👇\n#brasilia #camarao #jotaka"
+    "caption": "Carne do Sertão gratinada, pra dividir 🤤\nMarca sua dupla de almoço 👇\n#brasilia #carnedosertao #jotaka"
   },
   {
     "date": "2026-11-17",
@@ -286,11 +295,11 @@
   {
     "date": "2026-11-18",
     "time": "10:00",
-    "post": "14-carne-do-sertao",
+    "post": "15-file-acebolado",
     "files": [
-      "feed10/14-carne-do-sertao/01.jpg"
+      "feed10/15-file-acebolado/01.jpg"
     ],
-    "caption": "Carne do Sertão gratinada, pra dividir 🤤\nMarca sua dupla de almoço 👇\n#brasilia #carnedosertao #jotaka"
+    "caption": "Filé Acebolado com fritas, do jeito que tem que ser 🔥\nSalva pra pedir na próxima 📌\n#brasilia #fileacebolado #jotaka"
   },
   {
     "date": "2026-11-18",
@@ -304,11 +313,11 @@
   {
     "date": "2026-11-19",
     "time": "10:00",
-    "post": "15-file-acebolado",
+    "post": "16-petit-gateau",
     "files": [
-      "feed10/15-file-acebolado/01.jpg"
+      "feed10/16-petit-gateau/01.jpg"
     ],
-    "caption": "Filé Acebolado com fritas, do jeito que tem que ser 🔥\nSalva pra pedir na próxima 📌\n#brasilia #fileacebolado #jotaka"
+    "caption": "Petit gâteau pra fechar com chave de ouro 🍫\nMarca quem divide a sobremesa com você (ou não divide) 👇\n#brasilia #sobremesa #jotaka"
   },
   {
     "date": "2026-11-19",
@@ -326,11 +335,11 @@
   {
     "date": "2026-11-20",
     "time": "10:00",
-    "post": "16-petit-gateau",
+    "post": "17-camarao-com-file",
     "files": [
-      "feed10/16-petit-gateau/01.jpg"
+      "feed10/17-camarao-com-file/01.jpg"
     ],
-    "caption": "Petit gâteau pra fechar com chave de ouro 🍫\nMarca quem divide a sobremesa com você (ou não divide) 👇\n#brasilia #sobremesa #jotaka"
+    "caption": "Não sabe se pede camarão ou filé? Pede os dois no mesmo prato 🦐🥩 Camarão com Filé.\nMarca quem nunca sabe escolher 👇\n#brasilia #camarao #jotaka"
   },
   {
     "date": "2026-11-20",
@@ -350,11 +359,11 @@
   {
     "date": "2026-11-21",
     "time": "10:00",
-    "post": "17-camarao-com-file",
+    "post": "18-carne-de-sol",
     "files": [
-      "feed10/17-camarao-com-file/01.jpg"
+      "feed10/18-carne-de-sol/01.jpg"
     ],
-    "caption": "Não sabe se pede camarão ou filé? Pede os dois no mesmo prato 🦐🥩 Camarão com Filé.\nMarca quem nunca sabe escolher 👇\n#brasilia #camarao #jotaka"
+    "caption": "Carne de Sol pra dividir com a mesa 🔥\nMarca quem vai com você 👇\n#brasilia #carnedesol #jotaka"
   },
   {
     "date": "2026-11-21",
@@ -368,11 +377,11 @@
   {
     "date": "2026-11-22",
     "time": "10:00",
-    "post": "18-carne-de-sol",
+    "post": "19-churros",
     "files": [
-      "feed10/18-carne-de-sol/01.jpg"
+      "feed10/19-churros/01.jpg"
     ],
-    "caption": "Carne de Sol pra dividir com a mesa 🔥\nMarca quem vai com você 👇\n#brasilia #carnedesol #jotaka"
+    "caption": "E a sobremesa? 😋 Churros pra fechar o almoço.\nMarca quem nunca dispensa um doce 👇\n#brasilia #churros #jotaka"
   },
   {
     "date": "2026-11-22",
@@ -386,11 +395,11 @@
   {
     "date": "2026-11-23",
     "time": "10:00",
-    "post": "19-churros",
+    "post": "20-camarao-mangara",
     "files": [
-      "feed10/19-churros/01.jpg"
+      "feed10/20-camarao-mangara/01.jpg"
     ],
-    "caption": "E a sobremesa? 😋 Churros pra fechar o almoço.\nMarca quem nunca dispensa um doce 👇\n#brasilia #churros #jotaka"
+    "caption": "Camarão Mangará, pra quem ama camarão 🦐\nMarca quem vai provar com você 👇\n#brasilia #camarao #jotaka"
   },
   {
     "date": "2026-11-23",
@@ -406,15 +415,6 @@
       "feed/19-ranking-petiscos-carrossel/07.jpg"
     ],
     "caption": "Torresmo, Quibe Jotaká, Frango a Passarinho, Isca de Tilápia ou Pastel? 🏆\nComenta sua ordem do favorito pro menos favorito (ex.: C-A-E-B-D)!"
-  },
-  {
-    "date": "2026-11-24",
-    "time": "10:00",
-    "post": "20-camarao-mangara",
-    "files": [
-      "feed10/20-camarao-mangara/01.jpg"
-    ],
-    "caption": "Camarão Mangará, pra quem ama camarão 🦐\nMarca quem vai provar com você 👇\n#brasilia #camarao #jotaka"
   },
   {
     "date": "2026-11-24",
