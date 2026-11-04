@@ -3,7 +3,7 @@ no Instagram e no Facebook, a partir de feed.json. Usa o mesmo segredo META_PAGE
 
   python publish_feed.py              publica o post de hoje, no horário, se ainda não saiu
   python publish_feed.py --dry-run    prepara o próximo post no Instagram sem publicar
-  python publish_feed.py --date AAAA-MM-DD   publica agora o post daquele dia
+  python publish_feed.py --date AAAA-MM-DD [--time HH:MM]   publica agora o post daquele dia
 """
 import argparse, datetime as dt, json, os, sys, time
 from zoneinfo import ZoneInfo
@@ -45,37 +45,51 @@ def publish_fb(page_id, item):
     return call("POST", f"{page_id}/feed", **params)["id"]
 
 
+def chave(item):
+    return f"{item['date']} {item['time']}"
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--date")
+    ap.add_argument("--time", help="HH:MM, quando houver mais de um post no dia")
     a = ap.parse_args()
 
     page_id, page_name, ig_id, ig_user = accounts()
     print(f"Página: {page_name} · Instagram: @{ig_user}")
     now = dt.datetime.now(TZ); day = a.date or now.date().isoformat()
     sched = json.load(open(os.path.join(ROOT, "feed.json"), encoding="utf-8"))
-    item = next((s for s in sched if s["date"] == day), None)
-    if a.dry_run and not item and not a.date:
-        item = next((s for s in sched if s["date"] >= day), None)
-        if item: day = item["date"]
+    state = json.load(open(STATE)) if os.path.exists(STATE) else {}
+
+    def quando(s):
+        hh, mm = map(int, s["time"].split(":"))
+        return now.replace(hour=hh, minute=mm, second=0, microsecond=0)
+
+    do_dia = [s for s in sched if s["date"] == day and (not a.time or s["time"] == a.time)]
+    if a.dry_run:
+        item = do_dia[0] if do_dia else None
+        if not item and not a.date:
+            item = next((s for s in sched if (s["date"], s["time"]) >= (day, now.strftime("%H:%M"))), None)
+    elif a.date:
+        item = next((s for s in do_dia if not (state.get(chave(s), {}).get("instagram") and state.get(chave(s), {}).get("facebook"))), None)
+    else:
+        # o post de hoje cujo horário está a até 30 min de agora (ou passou há no máximo 3 h) e ainda não saiu
+        cand = [s for s in do_dia if -3 * 3600 <= (quando(s) - now).total_seconds() <= 1800
+                and not (state.get(chave(s), {}).get("instagram") and state.get(chave(s), {}).get("facebook"))]
+        item = cand[0] if cand else None
     if not item:
-        print(f"Nenhum post de feed para {day}."); return
-    print(f"{day} {item['time']}: {item['post']} ({len(item['files'])} imagem(ns))")
+        print(f"Nenhum post de feed pendente para {day} neste horário."); return
+    print(f"{item['date']} {item['time']}: {item['post']} ({len(item['files'])} imagem(ns))")
 
     if a.dry_run:
         c = ig_container(ig_id, item)
         print(f"Teste OK: o Instagram aceitou o post com a legenda (container {c}). Nada foi publicado.")
         return
 
-    state = json.load(open(STATE)) if os.path.exists(STATE) else {}
-    done = state.get(day, {})
-    if done.get("instagram") and done.get("facebook"):
-        print("Post de hoje já publicado."); return
+    done = state.get(chave(item), {})
     if not a.date:
-        hh, mm = map(int, item["time"].split(":"))
-        wait = (now.replace(hour=hh, minute=mm, second=0, microsecond=0) - now).total_seconds()
-        if wait > 1800: print("Ainda é cedo; a próxima execução publica."); return
+        wait = (quando(item) - now).total_seconds()
         if wait > 0: print(f"Aguardando {int(wait)}s…"); time.sleep(wait)
 
     erros = []
@@ -85,7 +99,7 @@ def main():
             done[net] = fn(acc, item); print(f"Publicado no {net}: {done[net]}")
         except SystemExit as e:
             erros.append(f"{net}: {e}"); print(f"Falhou no {net}: {e}")
-    state[day] = done
+    state[chave(item)] = done
     json.dump(state, open(STATE, "w"), indent=2)
     if erros: sys.exit("; ".join(erros))
 
