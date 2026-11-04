@@ -1,0 +1,54 @@
+name: Feed Jotaká
+
+on:
+  schedule:
+    # 17h45 e 18h30 (Brasília). A primeira espera até 18h e publica; a segunda só age se a primeira falhar.
+    - cron: "45 20 * * *"
+    - cron: "30 21 * * *"
+  # Teste sem publicar: enviar o arquivo testar-feed.txt
+  push:
+    branches: [main]
+    paths: [testar-feed.txt]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "dry-run = testar o próximo post sem publicar | publish = publicar o de hoje"
+        required: true
+        default: dry-run
+        type: choice
+        options: [dry-run, publish]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: stories
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Publicar post do feed
+        env:
+          META_PAGE_TOKEN: ${{ secrets.META_PAGE_TOKEN }}
+          META_PAGE_ID: ${{ secrets.META_PAGE_ID }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+        run: |
+          MODE="${{ github.event.inputs.mode || 'publish' }}"
+          if [ "${{ github.event_name }}" = "push" ]; then MODE=dry-run; fi
+          if [ "$MODE" = "dry-run" ]; then python publish_feed.py --dry-run; else python publish_feed.py; fi
+      - name: Registrar o que foi publicado
+        if: always()
+        run: |
+          if [ -n "$(git status --porcelain published_feed.json 2>/dev/null)" ]; then
+            git config user.name "stories-bot"
+            git config user.email "stories-bot@users.noreply.github.com"
+            git add published_feed.json
+            git commit -m "Registro do feed $(TZ=America/Sao_Paulo date +%F)"
+            git pull --rebase -q && git push
+          fi
