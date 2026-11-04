@@ -71,36 +71,39 @@ def main():
         item = do_dia[0] if do_dia else None
         if not item and not a.date:
             item = next((s for s in sched if (s["date"], s["time"]) >= (day, now.strftime("%H:%M"))), None)
-    elif a.date:
-        item = next((s for s in do_dia if not (state.get(chave(s), {}).get("instagram") and state.get(chave(s), {}).get("facebook"))), None)
-    else:
-        # o post de hoje cujo horário está a até 30 min de agora (ou passou há no máximo 3 h) e ainda não saiu
-        cand = [s for s in do_dia if -3 * 3600 <= (quando(s) - now).total_seconds() <= 1800
-                and not (state.get(chave(s), {}).get("instagram") and state.get(chave(s), {}).get("facebook"))]
-        item = cand[0] if cand else None
-    if not item:
-        print(f"Nenhum post de feed pendente para {day} neste horário."); return
-    print(f"{item['date']} {item['time']}: {item['post']} ({len(item['files'])} imagem(ns))")
-
-    if a.dry_run:
+        if not item:
+            print(f"Nenhum post de feed para {day}."); return
+        print(f"{item['date']} {item['time']}: {item['post']} ({len(item['files'])} imagem(ns))")
         c = ig_container(ig_id, item)
         print(f"Teste OK: o Instagram aceitou o post com a legenda (container {c}). Nada foi publicado.")
         return
 
-    done = state.get(chave(item), {})
-    if not a.date:
-        wait = (quando(item) - now).total_seconds()
-        if wait > 0: print(f"Aguardando {int(wait)}s…"); time.sleep(wait)
+    def feito(s):
+        d = state.get(chave(s), {})
+        return bool(d.get("instagram") and d.get("facebook"))
+    hoje = now.date().isoformat()
+    def na_hora(s):
+        if day != hoje: return True
+        return (quando(s) - now).total_seconds() <= (0 if a.date else 14 * 60)
+    fila = [s for s in do_dia if not feito(s) and na_hora(s)]
+    if not fila:
+        print(f"Nenhum post de feed pendente para {day} agora."); return
 
     erros = []
-    for net, fn, acc in (("instagram", publish_ig, ig_id), ("facebook", publish_fb, page_id)):
-        if done.get(net): continue
-        try:
-            done[net] = fn(acc, item); print(f"Publicado no {net}: {done[net]}")
-        except SystemExit as e:
-            erros.append(f"{net}: {e}"); print(f"Falhou no {net}: {e}")
-    state[chave(item)] = done
-    json.dump(state, open(STATE, "w"), indent=2)
+    for item in fila:
+        print(f"{item['date']} {item['time']}: {item['post']} ({len(item['files'])} imagem(ns))")
+        done = state.get(chave(item), {})
+        wait = (quando(item) - dt.datetime.now(TZ)).total_seconds()
+        if wait > 0 and day == hoje:
+            print(f"Aguardando {int(wait)}s…"); time.sleep(wait)
+        for net, fn, acc in (("instagram", publish_ig, ig_id), ("facebook", publish_fb, page_id)):
+            if done.get(net): continue
+            try:
+                done[net] = fn(acc, item); print(f"Publicado no {net}: {done[net]}")
+            except SystemExit as e:
+                erros.append(f"{net}: {e}"); print(f"Falhou no {net}: {e}")
+        state[chave(item)] = done
+        json.dump(state, open(STATE, "w"), indent=2)
     if erros: sys.exit("; ".join(erros))
 
 

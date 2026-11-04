@@ -20,6 +20,7 @@ API = "https://graph.facebook.com/v26.0"
 TZ = ZoneInfo("America/Sao_Paulo")
 ROOT = os.path.dirname(os.path.abspath(__file__))
 STATE = os.path.join(ROOT, "published.json")
+ANTES = 14 * 60   # pode começar até 14 min antes do horário e esperar
 
 
 def call(method, path, **params):
@@ -147,32 +148,32 @@ def main():
         if not item and not a.date:
             # No teste, usa a próxima arte do calendário.
             item = next((s for s in sched if (s["date"], s["time"]) >= (day, now.strftime("%H:%M"))), None)
-    elif a.date:
-        item = next((s for s in do_dia if not feito(s)), None)
-    else:
-        # o story de hoje cujo horário está a até 30 min de agora (ou passou há no máximo 3 h) e ainda não saiu
-        fila = [s for s in do_dia if -3 * 3600 <= (quando(s) - now).total_seconds() <= 1800 and not feito(s)]
-        if len(fila) > 1:
-            # mais de um story no mesmo horário: publica um depois do outro nesta mesma execução
-            erros = []
-            for s in fila:
-                try:
-                    publicar(s)
-                except SystemExit as e:
-                    erros.append(str(e))
-            if erros: sys.exit("; ".join(erros))
-            return
-        item = fila[0] if fila else None
-    if not item:
-        print(f"Nada pendente para {day} neste horário.")
-        return
-    if a.dry_run:
+        if not item:
+            print(f"Nada agendado para {day}."); return
         url = media_url(item["file"])
         print(f"{item['date']} {item['time']}: {item['file']}")
         c = ig_container(ig_id, url)
         print(f"Teste OK: o Instagram aceitou a arte (container {c}). Nada foi publicado.")
         return
-    publicar(item)
+
+    hoje = now.date().isoformat()
+    def na_hora(s):
+        falta = (quando(s) - now).total_seconds()
+        if day != hoje:
+            return True                      # outro dia pedido à mão: publica tudo que falta
+        return falta <= (0 if a.date else ANTES)  # hoje: o que já passou (atrasado) ou começa em até 14 min
+    fila = [s for s in do_dia if not feito(s) and na_hora(s)]
+    if not fila:
+        print(f"Nada pendente para {day} agora.")
+        return
+    erros = []
+    for s in fila:
+        try:
+            publicar(s)
+        except SystemExit as e:
+            erros.append(str(e))
+    if erros:
+        sys.exit("; ".join(erros))
 
 
 if __name__ == "__main__":
