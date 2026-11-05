@@ -1,2 +1,2 @@
 2026-11-05
-# publicar agora o estatico das 18h (adiantado)
+# disparo automatico das 18:03
